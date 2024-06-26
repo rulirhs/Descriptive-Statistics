@@ -1,0 +1,603 @@
+---
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+```{r}
+library(FactoMineR)
+library(factoextra)
+library(corrplot)
+library(Ecdat)
+library(gplots)
+
+
+# DATASET 1 - OCCUPATIONALSTATUS
+res.ca1 <- CA(occupationalStatus, graph = FALSE)
+dt1 <- as.table(as.matrix(occupationalStatus))
+balloonplot(t(dt1), main ="occupationalStatus", xlab ="", ylab="",
+            label = FALSE, show.margins = FALSE)
+
+# A - Statistical significance
+cat("Statistical significance", "\n")
+chi2 <- 1944.456
+df1 <- (nrow(occupationalStatus) - 1) * (ncol(occupationalStatus) - 1)
+pval1 <- pchisq(chi2, df = df1, lower.tail = FALSE)
+pval1
+cat("\n")
+
+# B - Eigenvalues / Variances
+cat("Eigenvalues", "\n")
+eig.val1 <- get_eigenvalue(res.ca1)
+eig.val1
+fviz_screeplot(res.ca1, addlabels = TRUE, ylim = c(0, 50))
+fviz_screeplot(res.ca1) +
+ geom_hline(yintercept=33.33, linetype=2, color="red")
+cat("\n")
+
+# C -	Biplot
+fviz_ca_biplot(res.ca1, repel = TRUE)
+cat("\n")
+
+# D - Graph of row variables
+row1 <- get_ca_row(res.ca1)
+row1
+fviz_ca_row(res.ca1, col.row="steelblue", shape.row = 15)
+
+
+fviz_ca_row(res.ca1, col.row = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE)
+corrplot(row1$cos2, is.corr=FALSE)
+fviz_cos2(res.ca1, choice = "row", axes = 1:2)
+
+
+corrplot(row1$contrib, is.corr=FALSE) 
+# Contributions of rows to dimension 1
+fviz_contrib(res.ca1, choice = "row", axes = 1, top = 10)
+# Contributions of rows to dimension 2
+fviz_contrib(res.ca1, choice = "row", axes = 2, top = 10)
+# Total contribution to dimension 1 and 2
+fviz_contrib(res.ca1, choice = "row", axes = 1:2, top = 10)
+fviz_ca_row(res.ca1, col.row = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE)
+cat("\n")
+
+# E - Graph of column variables
+col1 <- get_ca_col(res.ca1)
+col1
+fviz_ca_col(res.ca1)
+
+fviz_ca_col(res.ca1, col.col = "cos2", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE)
+fviz_cos2(res.ca1, choice = "col", axes = 1:2)
+
+fviz_contrib(res.ca1, choice = "col", axes = 1:2)
+cat("\n")
+
+# F - Biplot options
+# Simetris
+fviz_ca_biplot(res.ca1, repel = TRUE)
+# Asimetris
+fviz_ca_biplot(res.ca1, 
+               map ="rowprincipal", arrow = c(TRUE, TRUE),
+               repel = TRUE)
+# Contribution biplot
+fviz_ca_biplot(res.ca1, map ="colgreen", arrow = c(TRUE, FALSE),
+               repel = TRUE)
+
+# G - Dimension description
+res.desc1 <- dimdesc(res.ca1, axes = c(1,2))
+# Description of dimension 1 by row points
+head(res.desc1[[1]]$row, 4)
+# Description of dimension 1 by column points
+head(res.desc1[[1]]$col, 4)
+# Description of dimension 2 by row points
+res.desc1[[2]]$row
+# Description of dimension 1 by column points
+res.desc1[[2]]$col
+
+
+
+# DATASET 2 - ATTITUDE
+res.ca2 <- CA(attitude, graph = FALSE)
+dt2 <- as.table(as.matrix(attitude))
+balloonplot(t(dt2), main ="attitude", xlab ="", ylab="",
+            label = FALSE, show.margins = FALSE)
+
+# A - Statistical significance
+cat("Statistical significance", "\n")
+chi2 <- 1944.456
+df2 <- (nrow(attitude) - 1) * (ncol(attitude) - 1)
+pval2 <- pchisq(chi2, df = df2, lower.tail = FALSE)
+pval2
+cat("\n")
+
+# B - Eigenvalues / Variances
+cat("Eigenvalues", "\n")
+eig.val2 <- get_eigenvalue(res.ca1)
+eig.val2
+fviz_screeplot(res.ca2, addlabels = TRUE, ylim = c(0, 50))
+fviz_screeplot(res.ca2) +
+ geom_hline(yintercept=33.33, linetype=2, color="#a4e2ae")
+cat("\n")
+
+# C - Biplot
+fviz_ca_biplot(res.ca2, repel = TRUE)
+cat("\n")
+
+# D - Graph of row variables
+row2 <- get_ca_row(res.ca2)
+row2
+fviz_ca_row(res.ca2, col.row="steelblue", shape.row = 15)
+
+fviz_ca_row(res.ca2, col.row = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE)
+corrplot(row2$cos2, is.corr=FALSE)
+fviz_cos2(res.ca2, choice = "row", axes = 1:2)
+
+corrplot(row2$contrib, is.corr=FALSE) 
+# Contributions of rows to dimension 1
+fviz_contrib(res.ca2, choice = "row", axes = 1, top = 10)
+# Contributions of rows to dimension 2
+fviz_contrib(res.ca2, choice = "row", axes = 2, top = 10)
+# Total contribution to dimension 1 and 2
+fviz_contrib(res.ca2, choice = "row", axes = 1:2, top = 10)
+fviz_ca_row(res.ca2, col.row = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE)
+cat("\n")
+
+# E - Graph of column variables
+col2 <- get_ca_col(res.ca2)
+col2
+fviz_ca_col(res.ca2)
+
+fviz_ca_col(res.ca2, col.col = "cos2", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE)
+fviz_cos2(res.ca2, choice = "col", axes = 1:2)
+
+fviz_contrib(res.ca2, choice = "col", axes = 1:2)
+cat("\n")
+
+# F - Biplot options
+# Simetris
+fviz_ca_biplot(res.ca2, repel = TRUE)
+# Asimetris
+fviz_ca_biplot(res.ca2, 
+               map ="rowprincipal", arrow = c(TRUE, TRUE),
+               repel = TRUE)
+# Contribution biplot
+fviz_ca_biplot(res.ca2, map ="colgreen", arrow = c(TRUE, FALSE),
+               repel = TRUE)
+
+# G - Dimension description
+res.desc2 <- dimdesc(res.ca2, axes = c(1,2))
+# Description of dimension 1 by row points
+head(res.desc2[[1]]$row, 4)
+# Description of dimension 1 by column points
+head(res.desc2[[1]]$col, 4)
+# Description of dimension 2 by row points
+res.desc2[[2]]$row
+# Description of dimension 1 by column points
+res.desc2[[2]]$col
+
+
+# DATASET 3 - BIDS
+library(Ecdat)
+res.ca3 <- CA(Bids, graph = FALSE)
+dt3 <- as.table(as.matrix(Bids))
+balloonplot(t(dt3), main ="Bids", xlab ="", ylab="",
+            label = FALSE, show.margins = FALSE)
+
+# A - Statistical significance
+cat("Statistical significance", "\n")
+chi3 <- 1944.456
+df3 <- (nrow(Bids) - 1) * (ncol(Bids) - 1)
+pval3 <- pchisq(chi2, df = df3, lower.tail = FALSE)
+pval3
+cat("\n")
+
+# B - Eigenvalues / Variances
+cat("Eigenvalues", "\n")
+eig.val3 <- get_eigenvalue(res.ca3)
+eig.val3
+fviz_screeplot(res.ca3, addlabels = TRUE, ylim = c(0, 50))
+fviz_screeplot(res.ca3) +
+ geom_hline(yintercept=33.33, linetype=2, color="#c3b079")
+cat("\n")
+
+# C - Biplot
+fviz_ca_biplot(res.ca3, repel = TRUE)
+cat("\n")
+
+# D	- Graph of row variables
+row3 <- get_ca_row(res.ca3)
+row3
+fviz_ca_row(res.ca3, col.row="#50e4ee", shape.row = 15)
+
+fviz_ca_row(res.ca3, col.row = "cos2",
+             gradient.cols = c("#170bc2", "#ee50e7", "#0bc22d"), 
+             repel = TRUE)
+corrplot(row3$cos2, is.corr=FALSE)
+fviz_cos2(res.ca3, choice = "row", axes = 1:2)
+
+corrplot(row3$contrib, is.corr=FALSE) 
+# Contributions of rows to dimension 1
+fviz_contrib(res.ca3, choice = "row", axes = 1, top = 10)
+# Contributions of rows to dimension 2
+fviz_contrib(res.ca3, choice = "row", axes = 2, top = 10)
+# Total contribution to dimension 1 and 2
+fviz_contrib(res.ca3, choice = "row", axes = 1:2, top = 10)
+fviz_ca_row(res.ca3, col.row = "contrib",
+             gradient.cols = c("#170bc2", "#ee50e7", "#0bc22d"), 
+             repel = TRUE)
+cat("\n")
+
+# E - Graph of column variables
+col3 <- get_ca_col(res.ca3)
+col3
+fviz_ca_col(res.ca3)
+
+fviz_ca_col(res.ca3, col.col = "cos2", 
+             gradient.cols = c("#170bc2", "#ee50e7", "#0bc22d"),
+             repel = TRUE)
+fviz_cos2(res.ca3, choice = "col", axes = 1:2)
+
+fviz_contrib(res.ca3, choice = "col", axes = 1:2)
+cat("\n")
+
+# F - Biplot options
+# Simetris
+fviz_ca_biplot(res.ca3, repel = TRUE)
+# Asimetris
+fviz_ca_biplot(res.ca3, 
+               map ="rowprincipal", arrow = c(TRUE, TRUE),
+               repel = TRUE)
+# Contribution biplot
+fviz_ca_biplot(res.ca3, map ="colgreen", arrow = c(TRUE, FALSE),
+               repel = TRUE)
+
+# G - Dimension description
+res.desc3 <- dimdesc(res.ca3, axes = c(1,2))
+# Description of dimension 1 by row points
+head(res.desc3[[1]]$row, 4)
+# Description of dimension 1 by column points
+head(res.desc3[[1]]$col, 4)
+# Description of dimension 2 by row points
+res.desc3[[2]]$row
+# Description of dimension 1 by column points
+res.desc3[[2]]$col
+```
+
+
+
+```{r}
+library(FactoMineR)
+library(factoextra)
+library(corrplot)
+library(stevedata)
+library(openintro)
+library(survival)
+
+# DATASET 1
+
+dataa1 <- cgd[1:25, 2:5] #survival
+res.mca1 <- MCA(dataa1, graph = FALSE)
+
+# A - Eigenvalues / Variances
+eig.val1 <- get_eigenvalue(res.mca1)
+eig.val1
+fviz_screeplot(res.mca1, addlabels = TRUE, ylim = c(0, 45))
+
+# B - Biplot
+fviz_mca_biplot(res.mca1, 
+               repel = TRUE, ggtheme = theme_minimal())
+
+# C - Graph of variables
+# Result
+var1 <- get_mca_var(res.mca1)
+var1
+# Coordinates
+head(var1$coord)
+# Cos2: quality on the factore map
+head(var1$cos2)
+# Contributions to the principal components
+head(var1$contrib)
+
+# Correlation between variables and principal dimensions
+fviz_mca_var(res.mca1, choice = "mca.cor", 
+            repel = TRUE, # Avoid text overlapping (slow)
+            ggtheme = theme_minimal())
+
+# Coordinates of variable categories
+head(round(var1$coord, 2), 4)
+fviz_mca_var(res.mca1, 
+             repel = TRUE, 
+             ggtheme = theme_minimal())
+fviz_mca_var(res.mca1, col.var="black", shape.var = 15,
+             repel = TRUE)
+
+# Quality of representation of variable categories
+head(var1$cos2, 4)
+# Color by cos2 values: quality on the factor map
+fviz_mca_var(res.mca1, col.var = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, # Avoid text overlapping
+             ggtheme = theme_minimal())
+# Change the transparency by cos2 values
+fviz_mca_var(res.mca1, alpha.var="cos2",
+             repel = TRUE,
+             ggtheme = theme_minimal())
+# Cos2 of variable categories on Dim.1 and Dim.2
+fviz_cos2(res.mca1, choice = "var", axes = 1:2)
+
+# Contribution of variable categories to the dimensions
+head(round(var1$contrib,2), 4)
+# Contributions of rows to dimension 1
+fviz_contrib(res.mca1, choice = "var", axes = 1, top = 15)
+# Contributions of rows to dimension 2
+fviz_contrib(res.mca1, choice = "var", axes = 2, top = 15)
+# Total contribution to dimension 1 and 2
+fviz_contrib(res.mca1, choice = "var", axes = 1:2, top = 15)
+fviz_mca_var(res.mca1, col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, # avoid text overlapping (slow)
+             ggtheme = theme_minimal()
+             )
+
+# D - Graph of individuals
+# Result
+ind1 <- get_mca_ind(res.mca1)
+ind1
+# Coordinates of column points
+head(ind1$coord)
+# Quality of representation
+head(ind1$cos2)
+# Contributions
+head(ind1$contrib)
+# Plots: quality and contribution
+fviz_mca_ind(res.mca1, col.ind = "cos2", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE, # Avoid text overlapping (slow if many points)
+             ggtheme = theme_minimal())
+# Cos2 of individuals
+fviz_cos2(res.mca1, choice = "ind", axes = 1:2, top = 20)
+# Contribution of individuals to the dimensions
+fviz_contrib(res.mca1, choice = "ind", axes = 1:2, top = 20)
+
+# E - Color individuals by groups
+fviz_mca_ind(res.mca1,
+             label = "none", # hide individual labels
+             habillage = "treat",
+             palette = c("#00AFBB", "#E7B800"),
+             addEllipses = TRUE, ellipse.type = "confidence",
+             ggtheme = theme_minimal())
+fviz_ellipses(res.mca1, c("treat", "sex"),
+              geom = "point")
+fviz_ellipses(res.mca1, 1:4, geom = "point")
+
+# F - Dimension description
+res.desc1 <- dimdesc(res.mca1, axes = c(1,2))
+# Description of dimension 1
+res.desc1[[1]]
+# Description of dimension 2
+res.desc1[[2]]
+
+
+
+# DATASET 2
+
+dataa2 <- yrbss_samp[1:25, 2:5]
+res.mca2 <- MCA(dataa2, graph = FALSE)
+
+# A - Eigenvalues / Variances
+eig.val2 <- get_eigenvalue(res.mca2)
+eig.val2
+fviz_screeplot(res.mca2, addlabels = TRUE, ylim = c(0, 45))
+
+# B - Biplot
+fviz_mca_biplot(res.mca2, 
+               repel = TRUE, ggtheme = theme_minimal())
+
+# C - Graph of variables
+# Result
+var2 <- get_mca_var(res.mca2)
+var2
+# Coordinates
+head(var2$coord)
+# Cos2: quality on the factore map
+head(var2$cos2)
+# Contributions to the principal components
+head(var2$contrib)
+
+# Correlation between variables and principal dimensions
+fviz_mca_var(res.mca2, choice = "mca.cor", 
+            repel = TRUE, # Avoid text overlapping (slow)
+            ggtheme = theme_minimal())
+
+# Coordinates of variable categories
+head(round(var2$coord, 2), 4)
+fviz_mca_var(res.mca2, 
+             repel = TRUE, 
+             ggtheme = theme_minimal())
+fviz_mca_var(res.mca2, col.var="black", shape.var = 15,
+             repel = TRUE)
+
+# Quality of representation of variable categories
+head(var2$cos2, 4)
+# Color by cos2 values: quality on the factor map
+fviz_mca_var(res.mca2, col.var = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, # Avoid text overlapping
+             ggtheme = theme_minimal())
+# Change the transparency by cos2 values
+fviz_mca_var(res.mca2, alpha.var="cos2",
+             repel = TRUE,
+             ggtheme = theme_minimal())
+# Cos2 of variable categories on Dim.1 and Dim.2
+fviz_cos2(res.mca2, choice = "var", axes = 1:2)
+
+# Contribution of variable categories to the dimensions
+head(round(var2$contrib,2), 4)
+# Contributions of rows to dimension 1
+fviz_contrib(res.mca2, choice = "var", axes = 1, top = 15)
+# Contributions of rows to dimension 2
+fviz_contrib(res.mca2, choice = "var", axes = 2, top = 15)
+# Total contribution to dimension 1 and 2
+fviz_contrib(res.mca2, choice = "var", axes = 1:2, top = 15)
+fviz_mca_var(res.mca2, col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, # avoid text overlapping (slow)
+             ggtheme = theme_minimal()
+             )
+
+# D - Graph of individuals
+# Result
+ind2 <- get_mca_ind(res.mca2)
+ind2
+# Coordinates of column points
+head(ind2$coord)
+# Quality of representation
+head(ind2$cos2)
+# Contributions
+head(ind2$contrib)
+# Plots: quality and contribution
+fviz_mca_ind(res.mca2, col.ind = "cos2", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE, # Avoid text overlapping (slow if many points)
+             ggtheme = theme_minimal())
+# Cos2 of individuals
+fviz_cos2(res.mca2, choice = "ind", axes = 1:2, top = 20)
+# Contribution of individuals to the dimensions
+fviz_contrib(res.mca2, choice = "ind", axes = 1:2, top = 20)
+
+# E - Color individuals by groups
+fviz_mca_ind(res.mca2,
+             label = "none", # hide individual labels
+             habillage = "hispanic",
+             palette = c("#00AFBB", "#E7B800"),
+             addEllipses = TRUE, ellipse.type = "confidence",
+             ggtheme = theme_minimal())
+fviz_ellipses(res.mca2, c("hispanic", "race"),
+              geom = "point")
+fviz_ellipses(res.mca2, 1:4, geom = "point")
+
+# F - Dimension description
+res.desc2 <- dimdesc(res.mca2, axes = c(1,2))
+# Description of dimension 1
+res.desc2[[1]]
+# Description of dimension 2
+res.desc2[[2]]
+
+
+
+# DATASET 3
+
+dataa3 <- hsb2[1:25, 2:5]
+res.mca3 <- MCA(dataa3, graph = FALSE)
+
+# A - Eigenvalues / Variances
+eig.val3 <- get_eigenvalue(res.mca3)
+eig.val3
+fviz_screeplot(res.mca3, addlabels = TRUE, ylim = c(0, 45))
+
+# B - Biplot
+fviz_mca_biplot(res.mca3, 
+               repel = TRUE, ggtheme = theme_minimal())
+
+# C - Graph of variables
+# Result
+var3 <- get_mca_var(res.mca3)
+var3
+# Coordinates
+head(var3$coord)
+# Cos2: quality on the factore map
+head(var3$cos2)
+# Contributions to the principal components
+head(var3$contrib)
+
+# Correlation between variables and principal dimensions
+fviz_mca_var(res.mca3, choice = "mca.cor", 
+            repel = TRUE, # Avoid text overlapping (slow)
+            ggtheme = theme_minimal())
+
+# Coordinates of variable categories
+head(round(var3$coord, 2), 4)
+fviz_mca_var(res.mca3, 
+             repel = TRUE, 
+             ggtheme = theme_minimal())
+fviz_mca_var(res.mca3, col.var="black", shape.var = 15,
+             repel = TRUE)
+
+# Quality of representation of variable categories
+head(var3$cos2, 4)
+# Color by cos2 values: quality on the factor map
+fviz_mca_var(res.mca3, col.var = "cos2",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, # Avoid text overlapping
+             ggtheme = theme_minimal())
+# Change the transparency by cos2 values
+fviz_mca_var(res.mca3, alpha.var="cos2",
+             repel = TRUE,
+             ggtheme = theme_minimal())
+# Cos2 of variable categories on Dim.1 and Dim.2
+fviz_cos2(res.mca3, choice = "var", axes = 1:2)
+
+# Contribution of variable categories to the dimensions
+head(round(var3$contrib,2), 4)
+# Contributions of rows to dimension 1
+fviz_contrib(res.mca3, choice = "var", axes = 1, top = 15)
+# Contributions of rows to dimension 2
+fviz_contrib(res.mca3, choice = "var", axes = 2, top = 15)
+# Total contribution to dimension 1 and 2
+fviz_contrib(res.mca3, choice = "var", axes = 1:2, top = 15)
+fviz_mca_var(res.mca3, col.var = "contrib",
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"), 
+             repel = TRUE, # avoid text overlapping (slow)
+             ggtheme = theme_minimal())
+
+# D - Graph of individuals
+# Result
+ind3 <- get_mca_ind(res.mca3)
+ind3
+# Coordinates of column points
+head(ind3$coord)
+# Quality of representation
+head(ind3$cos2)
+# Contributions
+head(ind3$contrib)
+# Plots: quality and contribution
+fviz_mca_ind(res.mca3, col.ind = "cos2", 
+             gradient.cols = c("#00AFBB", "#E7B800", "#FC4E07"),
+             repel = TRUE, # Avoid text overlapping (slow if many points)
+             ggtheme = theme_minimal())
+# Cos2 of individuals
+fviz_cos2(res.mca3, choice = "ind", axes = 1:2, top = 20)
+# Contribution of individuals to the dimensions
+fviz_contrib(res.mca3, choice = "ind", axes = 1:2, top = 20)
+
+# E - Color individuals by groups
+fviz_mca_ind(res.mca3,
+             label = "none", # hide individual labels
+             habillage = "gender",
+             palette = c("#00AFBB", "#E7B800", "red", "#3215c8", "#e1e0e5", "#ec45ec", "#284328", "#f7761d", "#edba97", "#a2ac5f", "#82ff7e", "#847eff", "#f730ae", "#f73063", "#b030f7", "#fc7621", "cyan", "brown", "grey", "green", "blue", "yellow", "orange"),
+             addEllipses = TRUE, ellipse.type = "confidence",
+             ggtheme = theme_minimal())
+fviz_ellipses(res.mca3, c("gender", "race"),
+              geom = "point")
+fviz_ellipses(res.mca3, 1:4, geom = "point")
+
+# F - Dimension description
+res.desc3 <- dimdesc(res.mca3, axes = c(1,2))
+# Description of dimension 1
+res.desc3[[1]]
+# Description of dimension 2
+res.desc3[[2]]
+
+```
+

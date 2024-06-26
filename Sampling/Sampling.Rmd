@@ -1,0 +1,94 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+```{r}
+# Random Sample
+set.seed(918273645)
+data_binom1 = rbinom(100000, size = 30, prob = 0.9)
+
+mean_random_sample = numeric(500)
+
+for (i in 1:500) {
+  random_sample = sample(data_binom1, 1000)
+  mean_random_sample[i] = mean(random_sample)
+  if (i<6 || i>498){
+    cat("3 sample pertama ke -", i, "=", random_sample[1:3], "\n")
+    cat("3 sample terakhir ke -", i, "=", random_sample[998:1000], "\n")
+    cat("Mean sample ke -", i, "=", mean_random_sample[i], "\n\n")
+  }
+}
+
+mean1 = matrix(mean_random_sample, 50, 10)
+mean1
+warna1 <- colorRampPalette(c("brown", "purple", "yellow", "brown"))
+hist(mean_random_sample, main = "Mean Random Sample",xlab = "Nilai", ylab = "Frekuensi", col = warna1(10))
+
+# Systematic Sample
+set.seed(918273645)
+data_binom2 = rbinom(100000, size = 25, prob = 0.7)
+
+mean_systematic_sample = numeric(500)
+
+systematic.samp = function(data, n_sample) {
+  n_population = length(data)
+  data = sort(data)
+  k = n_population/n_sample
+  start = sample(1:k, 1)
+  sample = seq(start, n_population, by = k)
+  return(data[sample])
+}
+
+for (i in 1:500) {
+  systematic_sample = systematic.samp(data_binom2, 1000)
+  mean_systematic_sample[i] = mean(systematic_sample)
+  if (i<6 || i>498){
+    cat("3 sample pertama ke -", i, "=", systematic_sample[1:3], "\n")
+    cat("3 sample terakhir ke -", i, "=", systematic_sample[998:1000], "\n")
+    cat("Mean sample ke -", i, "=", mean_systematic_sample[i], "\n\n")
+  }
+}
+
+mean2 = matrix(mean_systematic_sample, 50, 10)
+mean2
+warna2 <- colorRampPalette(c("black", "green", "violet", "black"))
+hist(mean_systematic_sample, main = " Mean Systematic Sample",xlab = "Nilai", ylab = "Frekuensi", col = warna2(10))
+
+# Stratified Sample
+set.seed(918273645)
+data_binom3 = rbinom(100000, size = 20, prob = 0.4)
+
+mean_stratified_sample = numeric(500)
+
+stratified.samp = function(data, n_sample) {
+  n = length(data)
+  num_strata = round(1 + 3.3*log(n))
+  stratum_size = floor(n_sample/num_strata)
+  strata_indices = rep(1:num_strata, each = stratum_size)
+  if (length(strata_indices) < n_sample) {
+    strata_indices = c(strata_indices, sample(1:num_strata, n_sample-length(strata_indices), replace = TRUE))
+  }
+  strata_sample = lapply(unique(strata_indices), function(x) {
+    sample(data[which(strata_indices == x)], stratum_size)
+  })
+  sample_data = unlist(strata_sample)
+  return(sample_data)
+}
+
+for (i in 1:500) {
+  stratified_sample = stratified.samp(data_binom2, 1000)
+  mean_stratified_sample[i] = mean(stratified_sample)
+  if (i<6 || i>498){
+    cat("3 sample pertama ke -", i, "=", stratified_sample[1:3], "\n")
+    cat("3 sample terakhir ke -", i, "=", stratified_sample[998:1000], "\n")
+    cat("Mean sample ke -", i, "=", mean_stratified_sample[i], "\n\n")
+  }
+}
+
+mean3 = matrix(mean_stratified_sample, 50, 10)
+mean3
+
+warna3 <- colorRampPalette(c("blue", "white", "red", "blue"))
+hist(mean_stratified_sample, main = "Mean Stratified Sample", xlab = "Nilai", ylab = "Frekuensi", col=warna3(12))
+```

@@ -1,0 +1,184 @@
+---
+output:
+  html_document: default
+  word_document: default
+---
+
+```{r}
+# Soal 1 PCA dengan covarians (matriks Kovarians)
+
+# Load libraries
+library(factoextra)
+library(ggplot2)
+library(rgl)
+
+
+# Load iris dataset
+data(morley)
+
+# PCA with covariance matrix
+morley.pca1 <- prcomp(x = morley[, -9], scale. = TRUE, center = TRUE)
+summary(morley.pca1)
+morley.pca2 <- princomp(x = morley[, -9], cor = FALSE)
+summary(morley.pca2)
+
+# A. Eigenvalues
+eigenvalues1 <- morley.pca1$sdev^2
+eigenvalues1
+eigenvalues2 <- morley.pca2$sdev^2
+eigenvalues2
+
+# Tabel Eigenvalues prcomp
+eigen_table1 <- data.frame(PC = 1:length(eigenvalues1), Eigenvalue = eigenvalues1)
+eigen_table1
+
+# Grafik Eigenvalues prcomp
+warna1 <- colorRampPalette(c("purple", "cyan", "grey"))
+eigen_plot1 <- ggplot(data = eigen_table1, aes(x = PC, y = Eigenvalue)) +
+  geom_bar(stat = "identity", fill = warna1(3)) +
+  labs(x = "Principal Component", y = "Eigenvalue", title = "Eigenvalues of prcomp") +
+  theme(plot.background = element_rect(fill = "#FAEBD7"),
+        panel.background = element_rect(fill = "white"))
+eigen_plot1
+
+# Tabel Eigenvalues princomp
+eigen_table2 <- data.frame(PC = 1:length(eigenvalues2), Eigenvalue = eigenvalues2)
+eigen_table2
+
+# Grafik Eigenvalues princomp
+warna2 <- colorRampPalette(c("red", "blue", "green"))
+eigen_plot2 <- ggplot(data = eigen_table2, aes(x = PC, y = Eigenvalue)) +
+  geom_bar(stat = "identity", fill = warna2(3)) +
+  labs(x = "Principal Component", y = "Eigenvalue", title = "Eigenvalues of princomp") +
+  theme(plot.background = element_rect(fill = "#FAEBD7"),
+        panel.background = element_rect(fill = "white"))
+eigen_plot2
+
+# B. PC Matrix
+pc_matrix1 <- morley.pca1$rotation
+pc_matrix1
+pc_matrix2 <- morley.pca2$loadings
+pc_matrix2
+
+# C. Plot of Individuals in 2D
+plot_ind_2d1 <- fviz_pca_ind(morley.pca1, geom = "point", col.ind = as.factor(morley$Speed), palette = "jco")
+plot_ind_2d1
+plot_ind_2d2 <- fviz_pca_ind(morley.pca2, geom = "point", col.ind = as.factor(morley$Speed), palette = "jco")
+plot_ind_2d2
+
+# D. Plot of Variables in 2D
+plot_var_2d1 <- fviz_pca_var(morley.pca1, col.var = "#FF7F50")
+plot_var_2d1
+plot_var_2d2 <- fviz_pca_var(morley.pca2, col.var = "#FF1493")
+plot_var_2d2
+
+# E. Bi-plot of Individuals and Variables in 2D
+biplot_2d1 <- fviz_pca_biplot(morley.pca1, geom = "point", col.ind = morley$Speed, palette = "jco")
+biplot_2d1
+biplot_2d2 <- fviz_pca_biplot(morley.pca2, geom = "point", col.ind = morley$Speed, palette = "jco")
+biplot_2d2
+
+# F. Plot of PC in 3D
+plot_3d1 <- plot3d(morley.pca1$x[, 1], morley.pca1$x[, 2], morley.pca1$x[, 3],
+       col = morley$Expt,
+       xlab = "PC1", ylab = "PC2", zlab = "PC3",
+       type = "s", size = 2, main = "PLOT 1")
+plot_3d1
+plot_3d2 <- plot3d(morley.pca2$scores[, 1], morley.pca2$scores[, 2], morley.pca2$scores[, 3],
+       col = morley$Expt,
+       xlab = "PC1", ylab = "PC2", zlab = "PC3",
+       type = "s", size = 2, main = "PLOT 2")
+plot_3d2
+```
+
+
+```{r}
+# Soal 2 PCA dengan correlations (matriks korelasi)
+
+# Load libraries
+library(factoextra)
+library(ggplot2)
+library(rgl)
+
+
+# Load OrchardSprays dataset
+data("OrchardSprays")
+
+# PCA with correlation matrix
+OrchardSprays_pca1 <- prcomp(x = OrchardSprays[, -4], scale. = TRUE, center = TRUE)
+summary(OrchardSprays_pca1)
+OrchardSprays_pca2 <- princomp(x = OrchardSprays[, -4], cor = TRUE)
+summary(OrchardSprays_pca2)
+
+# A. Eigenvalues
+eigenvalues1 <- OrchardSprays_pca1$sdev^2
+eigenvalues1
+eigenvalues2 <- OrchardSprays_pca2$sdev^2
+eigenvalues2
+
+# Tabel Eigenvalues prcomp
+eigen_table_prcomp <- data.frame(PC = 1:length(eigenvalues1), Eigenvalue = eigenvalues1)
+eigen_table_prcomp
+
+# Grafik Eigenvalues prcomp
+warna1 <- colorRampPalette(c("pink", "#ADFF2F", "#87CEFA"))
+eigen_plot_prcomp <- ggplot(data = eigen_table_prcomp, aes(x = PC, y = Eigenvalue)) +
+  geom_bar(stat = "identity", fill = warna1(3)) +
+  labs(x = "Principal Component", y = "Eigenvalue", title = "Eigenvalues of prcomp") +
+  theme(plot.background = element_rect(fill = "#00FF7F"),
+        panel.background = element_rect(fill = "white"))
+eigen_plot_prcomp
+
+# Tabel Eigenvalues princomp
+eigen_table_princomp <- data.frame(PC = 1:length(eigenvalues1), Eigenvalue = eigenvalues1)
+eigen_table_princomp
+
+# Grafik Eigenvalues princomp
+warna2 <- colorRampPalette(c("#FF0000", "#F4A460", "#FFFF00"))
+eigen_plot_princomp <- ggplot(data = eigen_table_princomp, aes(x = PC, y = Eigenvalue)) +
+  geom_bar(stat = "identity", fill = warna2(3)) +
+  labs(x = "Principal Component", y = "Eigenvalue", title = "Eigenvalues of princomp") +
+  theme(plot.background = element_rect(fill = "#00FF7F"),
+        panel.background = element_rect(fill = "white"))
+eigen_plot_princomp
+
+# B. PC Matrix
+pc_matrix_prcomp <- OrchardSprays_pca1$rotation
+pc_matrix_prcomp
+pc_matrix_princomp <- OrchardSprays_pca2$loadings
+pc_matrix_princomp
+
+# C. Plot of Individuals in 2D
+plot_ind_2d_prcomp <- fviz_pca_ind(OrchardSprays_pca1, geom = "point")
+plot_ind_2d_prcomp
+plot_ind_2d_princomp <- fviz_pca_ind(OrchardSprays_pca2, geom = "point")
+plot_ind_2d_princomp
+
+# D. Plot of Variables in 2D
+plot_var_2d_prcomp <- fviz_pca_var(OrchardSprays_pca1, col.var = "maroon")
+plot_var_2d_prcomp
+
+plot_var_2d_princomp <- fviz_pca_var(OrchardSprays_pca2, col.var = "midnightblue")
+plot_var_2d_princomp
+
+# E. Bi-plot of Individuals and Variables in 2D
+biplot_2d1 <- fviz_pca_biplot(OrchardSprays_pca1, geom = "point")
+biplot_2d1
+biplot_2d2 <- fviz_pca_biplot(OrchardSprays_pca2, geom = "point")
+biplot_2d2
+
+# F. Plot of PC in 3D
+plot_3d1 <- plot3d(OrchardSprays_pca1$x[, 1], OrchardSprays_pca1$x[, 2], OrchardSprays_pca1$x[, 3],
+       col = OrchardSprays$decrease,
+       xlab = "PC1", ylab = "PC2", zlab = "PC3",
+       type = "s", size = 2, main = "PLOT 1")
+plot_3d1
+plot_3d2 <- plot3d(OrchardSprays_pca2$scores[, 1], OrchardSprays_pca2$scores[, 2], OrchardSprays_pca2$scores[, 3],
+       col = OrchardSprays$decrease,
+       xlab = "PC1", ylab = "PC2", zlab = "PC3",
+       type = "s", size = 2, main = "PLOT 2")
+plot_3d2
+```
+
+
+

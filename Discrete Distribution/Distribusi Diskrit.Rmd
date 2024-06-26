@@ -1,0 +1,219 @@
+```{r}
+# Hitung CDF
+library(Rlab)
+library(stats)
+# Distribusi Bernoulli
+cat("Distribusi Bernoulli","\n")
+pbern(q = 2, prob = 0.4, lower.tail = TRUE, log.p = FALSE)
+pbern(q = 2, prob = 0.5, lower.tail = TRUE, log.p = FALSE)
+pbern(q = 2, prob = 0.7, lower.tail = TRUE, log.p = FALSE)
+cat("\n")
+
+# Distribusi Binomial
+cat("Distribusi Binomial","\n")
+pbinom(q = 12, size = 25, prob = 0.7)
+pbinom(q = 12, size = 20, prob = 0.7)
+pbinom(q = 12, size = 15, prob = 0.7)
+cat("\n")
+
+# Distribusi Geometric
+cat("Distribusi Geometric","\n")
+pgeom(q = 3, prob = 0.9)
+pgeom(q = 3, prob = 0.7)
+pgeom(q = 3, prob = 0.5)
+cat("\n")
+
+# Distribusi Hypergeometric
+cat("Distribusi Hypergeometric","\n")
+phyper(q = 12, m = 60, n = 30, k = 40)
+phyper(q = 12, m = 50, n = 20, k = 30)
+phyper(q = 12, m = 40, n = 10, k = 20)
+cat("\n")
+
+# Distribusi Poisson
+cat("Distribusi Poisson","\n")
+ppois(q = 10, lambda = 22)
+ppois(q = 10, lambda = 15)
+ppois(q = 10, lambda = 8)
+
+```
+```{r}
+# Hitung PMF
+library(Rlab)
+library(stats)
+# Distribusi Bernoulli
+cat("Distribusi Bernoulli","\n")
+dbern(x = 2, prob = 0.6, log = FALSE)
+dbern(x = 2, prob = 0.5, log = FALSE)
+dbern(x = 2, prob = 0.3, log = FALSE)
+cat("\n")
+
+# Distribusi Binomial
+cat("Distribusi Binomial","\n")
+dbinom(x = 2, size = 5, prob = 0.5)
+dbinom(x = 2, size = 4, prob = 0.5)
+dbinom(x = 2, size = 3, prob = 0.5)
+cat("\n")
+
+# Distribusi Geometric
+cat("Distribusi Geometric","\n")
+dgeom(x = 3, prob = 0.3)
+dgeom(x = 3, prob = 0.4)
+dgeom(x = 3, prob = 0.5)
+cat("\n")
+
+# Distribusi Hypergeometric
+# m=jumlah sukses, n=jumlah gagal, x=jumlah sukses sampel, k=ukuran
+cat("Distribusi Hypergeometric","\n")
+dhyper(x = 2, m = 3, n = 5, k = 7)
+dhyper(x = 2, m = 6, n = 8, k = 10)
+dhyper(x = 2, m = 4, n = 6, k = 9)
+cat("\n")
+
+# Distribusi Poisson
+cat("Distribusi Poisson","\n")
+dpois(x = 2, lambda = 2)
+dpois(x = 2, lambda = 3)
+dpois(x = 2, lambda = 4)
+```
+```{r}
+# Mencari E(x) dan var(x) dari kasus
+
+# Distribusi Bernoulli
+# Sebuah koin dilempar sekali. Tentukan expected value dan variance jumlah munculnya sisi yang muncul dengan angka 1.
+p <- 0.5
+e <- p
+var <- p * (1 - p)
+# Output
+cat("Distribusi Bernoulli","\n")
+cat("E(x):", e, "\n")
+cat("Var(x):", var, "\n")
+cat("\n")
+
+# Distribusi Binomial
+# Seorang dokter memiliki data bahwa pasien penyakit tertentu sembuh dengan probabilitas 0,8. Jika ia memiliki 10 pasien, tentukan expected value dan variance jumlah pasien yang sembuh.
+p <- 0.8
+n <- 10
+e <- n * p
+var <- n * p * (1 - p)
+# Output
+cat("Distribusi Binomial","\n")
+cat("E(x):", e, "\n")
+cat("Var(x):", var, "\n")
+cat("\n")
+
+# Distribusi Geometric
+# Seorang pemain game berhasil menyelesaikan level pertama dengan probabilitas 0,4. Tentukan expected value dan variance jumlah percobaan hingga berhasil menyelesaikan level pertama.
+p <- 0.4
+e <- 1 / p
+var <- (1 - p) / (p ^ 2)
+# Output
+cat("Distribusi Geometric","\n")
+cat("E(x):", e, "\n")
+cat("Var(x):", var, "\n")
+cat("\n")
+
+# Distribusi Hypergeometric
+# Dalam sebuah keluarga, terdapat 4 anak, 2 laki-laki dan 2 perempuan. Jika 2 anak dipilih secara acak untuk menerima hadiah, tentukan expected value dan variance jumlah anak laki-laki yang terpilih.
+N <- 4
+K <- 2
+n <- 2
+# Hitung nilai probabilitas sukses
+p <- K / N
+e <- n * p
+var <- n * p * (1 - p) * (N - n) / (N - 1)
+# Output
+cat("Distribusi Hypergeometric","\n")
+cat("E(x):", e, "\n")
+cat("Var(x):", var, "\n")
+cat("\n")
+
+# Distribusi Poisson
+# Sebuah website rata-rata menerima 100 pengunjung dalam waktu 1 jam. Tentukan expected value dan variance jumlah pengunjung dalam 30 menit.
+mu <- 100
+t <- 0.5
+e <- mu * t
+var <- mu * t
+# Output
+cat("Distribusi Poisson","\n")
+cat("E(x):", e, "\n")
+cat("Var(x):", var, "\n")
+
+```
+
+```{r}
+# Generate 5000 data
+library(stats)
+library(graphics)
+library(grDevices)
+
+# Distribusi Bernoulli
+set.seed(12345)
+warnaBern <- colorRampPalette(c("red", "blue", "black"))
+dataBern1 <- rbinom(5000, size = 11, prob = 0.22)
+dataBern2 <- rbinom(5000, size = 12, prob = 0.22)
+dataBern3 <- rbinom(5000, size = 13, prob = 0.22)
+dataBern4 <- rbinom(5000, size = 14, prob = 0.22)
+dataBern5 <- rbinom(5000, size = 15, prob = 0.22)
+hist(dataBern1, breaks = 9, main = "Histrogram Distribusi Bernoulli size 11", xlab = "Nilai", ylab = "Frek", col = warnaBern(9))
+hist(dataBern2, breaks = 9, main = "Histrogram Distribusi Bernoulli size 12", xlab = "Nilai", ylab = "Frek", col = warnaBern(9))
+hist(dataBern3, breaks = 9, main = "Histrogram Distribusi Bernoulli size 13", xlab = "Nilai", ylab = "Frek", col = warnaBern(9))
+hist(dataBern4, breaks = 9, main = "Histrogram Distribusi Bernoulli size 14", xlab = "Nilai", ylab = "Frek", col = warnaBern(9))
+hist(dataBern5, breaks = 9, main = "Histrogram Distribusi Bernoulli size 15", xlab = "Nilai", ylab = "Frek", col = warnaBern(9))
+
+#	Distribusi Binomial
+set.seed(12345)
+warnaBin <- colorRampPalette(c("green", "red", "white"))
+dataBin1 <- rbinom(5000, size = 14, prob = 0.78)
+dataBin2 <- rbinom(5000, size = 15, prob = 0.78)
+dataBin3 <- rbinom(5000, size = 16, prob = 0.78)
+dataBin4 <- rbinom(5000, size = 17, prob = 0.78)
+dataBin5 <- rbinom(5000, size = 18, prob = 0.78)
+hist(dataBin1, breaks = 12, main = "Histrogram Distribusi Binomial size = 14", xlab = "Nilai", ylab = "Frek", col = warnaBin(10))
+hist(dataBin2, breaks = 12, main = "Histrogram Distribusi Binomial size = 15", xlab = "Nilai", ylab = "Frek", col = warnaBin(10))
+hist(dataBin3, breaks = 12, main = "Histrogram Distribusi Binomial size = 16", xlab = "Nilai", ylab = "Frek", col = warnaBin(10))
+hist(dataBin4, breaks = 12, main = "Histrogram Distribusi Binomial size = 17", xlab = "Nilai", ylab = "Frek", col = warnaBin(10))
+hist(dataBin5, breaks = 12, main = "Histrogram Distribusi Binomial size = 18", xlab = "Nilai", ylab = "Frek", col = warnaBin(10))
+
+#	Distribusi Geometric
+set.seed(12345)
+warnaGeo <- colorRampPalette(c("purple", "cyan", "brown"))
+dataGeo1 <- rgeom(5000, prob = 0.4)
+dataGeo2 <- rgeom(5000, prob = 0.5)
+dataGeo3 <- rgeom(5000, prob = 0.6)
+dataGeo4 <- rgeom(5000, prob = 0.7)
+dataGeo5 <- rgeom(5000, prob = 0.8)
+hist(dataGeo1, breaks = max(dataGeo)-min(dataGeo)+1, main = "Histogram Distribusi Geometri prob = 0.4", xlab = "Nilai", ylab = "Frek", col = warnaGeo(7))
+hist(dataGeo2, breaks = max(dataGeo)-min(dataGeo)+1, main = "Histogram Distribusi Geometri prob = 0.5", xlab = "Nilai", ylab = "Frek", col = warnaGeo(7))
+hist(dataGeo3, breaks = max(dataGeo)-min(dataGeo)+1, main = "Histogram Distribusi Geometri prob = 0.6", xlab = "Nilai", ylab = "Frek", col = warnaGeo(7))
+hist(dataGeo4, breaks = max(dataGeo)-min(dataGeo)+1, main = "Histogram Distribusi Geometri prob = 0.7", xlab = "Nilai", ylab = "Frek", col = warnaGeo(7))
+hist(dataGeo5, breaks = max(dataGeo)-min(dataGeo)+1, main = "Histogram Distribusi Geometri prob = 0.8", xlab = "Nilai", ylab = "Frek", col = warnaGeo(7))
+
+#	Distribusi Hypergeometric
+set.seed(12345)
+warnaHyp <- colorRampPalette(c("grey", "cyan", "green"))
+dataHyp1 <- rhyper(5000, m = 20, n = 10, k = 15)
+dataHyp2 <- rhyper(5000, m = 30, n = 20, k = 25)
+dataHyp3 <- rhyper(5000, m = 40, n = 30, k = 35)
+dataHyp4 <- rhyper(5000, m = 50, n = 40, k = 45)
+dataHyp5 <- rhyper(5000, m = 60, n = 50, k = 55)
+hist(dataHyp1, breaks = max(dataHyp)-min(dataHyp)+1, main = "Histogram Distribusi Hypergeometric m = 20, n = 10, k = 15", xlab = "Nilai", ylab = "Frek", col = warnaHyp(9))
+hist(dataHyp2, breaks = max(dataHyp)-min(dataHyp)+1, main = "Histogram Distribusi Hypergeometric m = 30, n = 20, k = 25", xlab = "Nilai", ylab = "Frek", col = warnaHyp(9))
+hist(dataHyp3, breaks = max(dataHyp)-min(dataHyp)+1, main = "Histogram Distribusi Hypergeometric m = 40, n = 30, k = 35", xlab = "Nilai", ylab = "Frek", col = warnaHyp(9))
+hist(dataHyp4, breaks = max(dataHyp)-min(dataHyp)+1, main = "Histogram Distribusi Hypergeometric m = 50, n = 40, k = 45", xlab = "Nilai", ylab = "Frek", col = warnaHyp(9))
+hist(dataHyp5, breaks = max(dataHyp)-min(dataHyp)+1, main = "Histogram Distribusi Hypergeometric m = 60, n = 50, k = 55", xlab = "Nilai", ylab = "Frek", col = warnaHyp(9))
+
+#	Distribusi Poisson
+set.seed(12345)
+warnaPoi <- colorRampPalette(c("yellow", "pink", "green"))
+dataPoi1 <- rpois(5000, lambda = 5)
+dataPoi2 <- rpois(5000, lambda = 6)
+dataPoi3 <- rpois(5000, lambda = 7)
+dataPoi4 <- rpois(5000, lambda = 8)
+dataPoi5 <- rpois(5000, lambda = 9)
+hist(dataPoi1, breaks = max(dataPoi)-min(dataPoi)+1, main = "Histogram Distribusi Poisson lambda = 5", xlab = "Nilai", ylab = "Frek", col = warnaPoi(11))
+hist(dataPoi2, breaks = max(dataPoi)-min(dataPoi)+1, main = "Histogram Distribusi Poisson lambda = 6", xlab = "Nilai", ylab = "Frek", col = warnaPoi(11))
+hist(dataPoi3, breaks = max(dataPoi)-min(dataPoi)+1, main = "Histogram Distribusi Poisson lambda = 7", xlab = "Nilai", ylab = "Frek", col = warnaPoi(11))
+hist(dataPoi4, breaks = max(dataPoi)-min(dataPoi)+1, main = "Histogram Distribusi Poisson lambda = 8", xlab = "Nilai", ylab = "Frek", col = warnaPoi(11))
+hist(dataPoi5, breaks = max(dataPoi)-min(dataPoi)+1, main = "Histogram Distribusi Poisson lambda = 9", xlab = "Nilai", ylab = "Frek", col = warnaPoi(11))
+```

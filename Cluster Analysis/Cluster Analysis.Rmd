@@ -1,0 +1,152 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
+```{r}
+# NOMOR 1
+library(cluster)
+library(dendextend)
+library(factoextra)
+library(mclust)
+library(Gmedian)
+
+USJudgeRatings_std <- scale(USJudgeRatings)
+USJudgeRatings_distance <- dist(x = USJudgeRatings_std, method = "euclidean")
+swiss_std <- scale(swiss)
+swiss_distance <- dist(x = swiss_std, method = "euclidean")
+volcano_std <- scale(volcano)
+volcano_distance <- dist(x = volcano_std, method = "euclidean")
+
+# 1.	Carilah 3 dataset yang sesuai untuk Clustering kemudian gunakan metode :
+# a.	5 metode agglomerative (centroid, single-linkage, complete-linkage, average-linkage dan ward)
+
+USJudgeRatings_centroid <- hclust(d = volcano_distance, method = "centroid")
+USJudgeRatings_centroid
+swiss_centroid <- hclust(d = swiss_distance, method = "centroid")
+swiss_centroid
+volcano_centroid <- hclust(d = volcano_distance, method = "centroid")
+volcano_centroid
+
+USJudgeRatings_single <- hclust(d = volcano_distance, method = "single")
+USJudgeRatings_single
+swiss_single <- hclust(d = swiss_distance, method = "single")
+swiss_single
+volcano_single <- hclust(d = volcano_distance, method = "single")
+volcano_single
+
+USJudgeRatings_complete <- hclust(d = volcano_distance,method = "complete")
+USJudgeRatings_complete
+swiss_complete <- hclust(d = swiss_distance,method = "complete")
+swiss_complete
+volcano_complete <- hclust(d = volcano_distance,method = "complete")
+volcano_complete
+
+USJudgeRatings_avg <- hclust(d = volcano_distance, method = "average")
+USJudgeRatings_avg
+swiss_avg <- hclust(d = swiss_distance, method = "average")
+swiss_avg
+volcano_avg <- hclust(d = volcano_distance, method = "average")
+volcano_avg
+
+USJudgeRatings_ward <- hclust(d = volcano_distance, method = "ward.D2")
+USJudgeRatings_ward
+swiss_ward <- hclust(d = swiss_distance, method = "ward.D2")
+swiss_ward
+volcano_ward <- hclust(d = volcano_distance, method = "ward.D2")
+volcano_ward
+
+# b.	Tentukan nilai k (banyaknya klaster) berdasarkan dendogramnya
+fviz_dend(USJudgeRatings_centroid, k = 4, k_colors = "jco", rect = T, 
+ main = "Centroid Linkage Cluster Dataset USJudgeRatings")
+fviz_dend(swiss_centroid, k = 4, k_colors = "jco", rect = T, 
+ main = "Centroid Linkage Cluster Dataset Swiss")
+fviz_dend(volcano_centroid, k = 4, k_colors = "jco", rect = T, 
+ main = "Centroid Linkage Cluster Dataset Volcano")
+
+fviz_dend(USJudgeRatings_single, k = 4, k_colors = "jco", rect = T, 
+ main = "Single Linkage Cluster Dataset USJudgeRatings")
+fviz_dend(swiss_single, k = 4, k_colors = "jco", rect = T, 
+ main = "Single Linkage Cluster Dataset Swiss")
+fviz_dend(volcano_single, k = 4, k_colors = "jco", rect = T, 
+ main = "Single Linkage Cluster Dataset Volcano")
+
+fviz_dend(USJudgeRatings_complete, k = 4, k_colors = ("jco"), rect = T, 
+ main = "Complete Linkage Cluster Dataset USJudgeRatings")
+fviz_dend(swiss_complete, k = 4, k_colors = ("jco"), rect = T, 
+ main = "Complete Linkage Cluster Dataset Swiss")
+fviz_dend(volcano_complete, k = 4, k_colors = ("jco"), rect = T, 
+ main = "Complete Linkage Cluster Dataset Volcano") 
+
+fviz_dend(USJudgeRatings_avg, k = 4, k_colors = "jco", rect = T, 
+ main = "Average Linkage Cluster Dataset USJudgeRatings")
+fviz_dend(swiss_avg, k = 4, k_colors = "jco", rect = T, 
+ main = "Average Linkage Cluster Dataset Swiss")
+fviz_dend(volcano_avg, k = 4, k_colors = "jco", rect = T, 
+ main = "Average Linkage Cluster Dataset Volcano")
+
+fviz_dend(USJudgeRatings_ward, k = 4, k_colors = "jco", rect = T, 
+ main = "Ward Linkage Cluster Dataset USJudgeRatings")
+fviz_dend(swiss_ward, k = 4, k_colors = "jco", rect = T, 
+ main = "Ward Linkage Cluster Dataset Swiss")
+fviz_dend(volcano_ward, k = 4, k_colors = "jco", rect = T, 
+ main = "Ward Linkage Cluster Dataset Volcano")
+
+
+
+# c.	Tentukan nilai k (banyaknya klaster) berdasarkan nilai BIC atau yang lain
+library(mclust)
+cluster_wp1 <- Mclust(USJudgeRatings[1:4])
+plot(cluster_wp1)
+cluster_wp2 <-Mclust(swiss[1:4])
+plot(cluster_wp2)
+cluster_wp3 <-Mclust(volcano[1:4])
+plot(cluster_wp3)
+
+
+
+```
+
+```{r}
+library(cluster)
+library(dendextend)
+library(factoextra)
+library(mclust)
+library(Gmedian)
+
+# 2.	Gunakan no 1 untuk metode-metode berikut :
+# a.	K-means dan buatlah table rekapitulasi seperti no 1d
+kmean_USJudgeRatings <- kmeans(USJudgeRatings,2)
+kmean_USJudgeRatings
+fviz_cluster(kmean_USJudgeRatings, USJudgeRatings)
+kmean_swiss <- kmeans(swiss,2)
+kmean_swiss
+fviz_cluster(kmean_swiss, swiss)
+kmean_volcano <- kmeans(volcano,3)
+kmean_volcano
+fviz_cluster(kmean_volcano, volcano)
+
+# b.	K-medoids dan buatlah table rekapitulasi seperti no 1d
+kmedoid_USJudgeRatings <- pam(USJudgeRatings,2)
+summary(kmedoid_USJudgeRatings)
+kmedoid_swiss <- pam(swiss,2)
+summary(kmedoid_swiss)
+kmedoid_volcano <- pam(volcano,2)
+summary(kmedoid_volcano)
+
+# c.	K-medians dan buatlah table rekapitulasi seperti no 1d
+library(Gmedian)
+kmedian_USJudgeRatings <- kGmedian(USJudgeRatings,2)
+kmedian_USJudgeRatings
+kmedian_swiss <- kGmedian(swiss,2)
+kmedian_swiss
+kmedian_volcano <- kGmedian(volcano,2)
+kmedian_volcano
+
+
+```
+
+
+
+
+```

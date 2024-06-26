@@ -1,0 +1,317 @@
+---
+title: "R Notebook"
+output:
+  word_document: default
+  html_notebook: default
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
+
+Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+```{r}
+# Chapter 2.1.3
+ggplot(data = starwars,
+       mapping = aes(x = height, 
+                     y = mass,
+                     color = gender)) +
+  geom_point(alpha = .7,
+             size = 3) +
+  geom_smooth(method = "lm", 
+              se = FALSE, 
+              size = 1.5)
+
+# Chapter 3.1.1 Figure 3.8 (barchart)
+library(ggplot2)
+ggplot(starwars, aes(x = eye_color)) +
+  geom_bar() +
+  labs(x = "",
+       y = "Frequency",
+       title = "Star Wars Characters by Homeworld") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Chapter 3.1.2 Piechart
+library(tidyverse)
+plotdata <- starwars %>%
+  count(gender) %>%
+  mutate(prop = round(n*100/sum(n), 1),
+         lab.ypos = cumsum(prop) - 0.5*prop)
+plotdata$label <- paste0(plotdata$gender, "\n",                         round(plotdata$prop), "%")
+ggplot(plotdata, 
+       aes(x = "", 
+           y = prop, 
+           fill = gender)) +
+  geom_bar(width = 1, 
+           stat = "identity", 
+           color = "black") +
+  geom_text(aes(y = lab.ypos, label = label), 
+            color = "black") +
+  coord_polar("y", 
+              start = 0, 
+              direction = -1) +
+  theme_void() +
+  theme(legend.position = "FALSE") +
+  labs(title = "Star Wars Characters by Gender")
+
+# Chapter 3.1.3 Treemap
+library(ggplot2)
+library(treemapify)
+data(starwars)
+plotdata <- starwars %>%
+  group_by(species) %>%
+  summarise(n = n())
+ggplot(plotdata, 
+       aes(fill = species, 
+           area = n, 
+           label = species)) +
+  geom_treemap() + 
+  geom_treemap_text(colour = "white", 
+                    place = "centre") +
+  labs(title = "Star Wars Characters by Species") +
+  theme(legend.position = "none")
+
+# Chapter 3.2
+ggplot(starwars, aes(x = height)) +
+  geom_density(fill = "indianred3") + 
+  labs(title = "Characters by height")
+
+# Chapter 3.2 dotchart
+ggplot(starwars, aes(x = height)) +
+geom_dotplot(fill = "gold",
+color = "black") +
+labs(title = "Height distribution of Star Wars characters",
+y = "Proportion",
+x = "Height")
+
+# Chapter 4.1.1
+library(ggplot2)
+library(dplyr)
+plotdata <- starwars %>%
+  group_by(gender, species) %>%
+  summarize(count = n()) %>%
+  mutate(pct = count / sum(count))
+ggplot(plotdata, 
+       aes(x = factor(gender), 
+           y = pct, 
+           fill = species)) + 
+  geom_bar(stat = "identity",
+           position = "fill",
+           show.legend = FALSE) +
+  labs(y = NULL, 
+       fill = "Species",
+       x = NULL,
+       title = "Species Distribution by Gender in Star Wars") +
+  scale_fill_brewer(palette = "Set2") +
+  theme_minimal() +
+  theme(legend.position = "bottom",
+        axis.line = element_blank(),
+        axis.text = element_text(size = 12),
+        axis.title = element_text(size = 14, face = "bold"),
+        plot.title = element_text(size = 16, face = "bold"))
+
+# Chapter 4.2.2
+data(starwars)
+library(dplyr)
+plotdata <- filter(starwars, 
+                   name == "Luke Skywalker")
+ggplot(plotdata, 
+       aes(x = height, 
+           y = mass)) +
+  geom_line() 
+
+# Chapter 4.3.2
+library(ggplot2)
+ggplot(starwars, aes(x = height, fill = gender)) +
+  geom_density(alpha = 0.4) +
+  labs(title = "Height distribution by gender")
+
+# Chapter 4.3.4
+ggplot(starwars, aes(x = gender, y = height)) +
+  geom_boxplot(width = .2, fill = "orange",
+               outlier.color = "orange",
+               outlier.size = 2) + 
+  labs(title = "Height distribution by gender in Star Wars") 
+
+# Chapter 4.3.6
+pd <- position_dodge(0.2)
+ggplot(starwars, 
+       aes(x = factor(eye_color), 
+           y = height, 
+           group=gender, 
+           color=gender)) +
+  geom_point(position=pd, 
+             size = 3) +
+  geom_line(position = pd, 
+            size = 1) +
+  geom_errorbar(aes(ymin = height - height/10, 
+                    ymax = height + height/10), 
+                width = .1, 
+                position = pd, 
+                size = 1) +
+  scale_y_continuous() +
+  scale_color_brewer(palette="Set1") +
+  theme_minimal() +
+  labs(title = "Height of Star Wars characters by species and gender",
+       subtitle = "(mean +/- 10%)",
+       x = "", 
+       y = "Height (cm)",
+       color = "Gender")
+
+#chapter 4.3.7
+library(scales)
+  ggplot(starwars,
+  aes(x = factor(species),
+  y = height,
+  color = gender)) +
+  geom_boxplot(size=1,
+  outlier.shape = 1,
+  outlier.color = "black",
+  outlier.size = 3) +
+  geom_jitter(alpha = 0.5,
+  width=.2) +
+  scale_y_continuous(label = unit_format(unit = "cm", scale = 0.01)) +
+  labs(title = "Height of Star Wars Characters by Species and Gender",
+  subtitle = "Data from Star Wars API",
+  x = "",
+  y = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom") +
+  coord_flip()
+
+# Chapter 4.3.8
+library(ggbeeswarm)
+library(scales)
+  ggplot(subset(starwars, species %in% c("Human", "Droid")),
+  aes(x = species,
+  y = height,
+  color = gender)) +
+  geom_quasirandom(alpha = 0.7,
+  size = 1.5) +
+  scale_y_continuous(label = unit_format(unit = "cm", scale = 0.01)) +
+  labs(title = "Height of Human and Droid Characters in Star Wars by Gender",
+  subtitle = "Data from Star Wars API",
+  x = "",
+  y = "") +
+  theme_minimal() +
+  theme(legend.position = "bottom")
+  
+# Chapter 4.3.9
+ggplot(starwars,
+  aes(x=height,
+  y=reorder(name, height))) +
+  geom_point(color="blue",
+  size = 2) +
+  geom_segment(aes(x = 0,
+  xend = height,
+  y = reorder(name, height),
+  yend = reorder(name, height)),
+  color = "lightgrey") +
+  labs (x = "Height (cm)",
+  y = "",
+  title = "Height of Star Wars Characters",
+  subtitle = "Data from Star Wars API") +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank(),
+  panel.grid.minor = element_blank())
+
+# Chapter
+ggplot(starwars,
+  aes(x = height,
+  y = mass,
+  color = gender)) +
+  geom_point(alpha = .4,
+  size = 3) +
+  geom_smooth(se=FALSE,
+  method = "lm",
+  formula = y~poly(x,2),
+  size = 1.5) +
+  labs(x = "Height (cm)",
+  title = "Mass of Star Wars Characters by Gender and Height",
+  subtitle = "Data from Star Wars API",
+  y = "",
+  color = "Gender") +
+  scale_y_continuous(label = scales::comma) +
+  scale_color_brewer(palette = "Set1") +
+  theme_minimal()
+
+# Chapter 5.2
+#create new variable
+plotdata <- starwars %>%
+  mutate(homeworld_label = case_when(
+    homeworld == "Tatooine" ~ "Tatooine",
+    homeworld == "Alderaan" ~ "Alderaan",
+    homeworld == "Coruscant" ~ "Coruscant",
+    homeworld == "Naboo" ~ "Naboo",
+    homeworld == "Kamino" ~ "Kamino",
+    homeworld == "Stewjon" ~ "Stewjon",
+    TRUE ~ "Other"
+  )) %>%
+  group_by(homeworld_label, species) %>%
+  summarize(n = n(),
+            mean_height = mean(height),
+            sd_height = sd(height),
+            se_height = sd_height / sqrt(n))
+ggplot(plotdata, 
+       aes(x = species, 
+           y = mean_height,
+           color = homeworld_label)) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = mean_height - se_height, 
+                    ymax = mean_height + se_height),
+                width = .1) +
+  scale_y_continuous(breaks = seq(0, 250, 50)) +
+  facet_grid(. ~ homeworld_label) +
+  theme_bw() +
+  theme(legend.position = "none",
+        panel.grid.major.x = element_blank(),
+        panel.grid.minor.y = element_blank()) +
+  labs(x="", 
+       y="Mean Height (cm)", 
+       title="Mean Height by Species and Homeworld",
+       subtitle = "(Means and standard errors)") +
+  scale_color_brewer(palette="Set1")
+
+# MAAPPP
+
+
+# Chapter 7.1
+library(ggplot2)
+library(dplyr)
+data(starwars)
+char_height <- starwars %>%
+  select(name, height) %>%
+  filter(!is.na(height)) %>%
+  rename(Close = height) %>%
+  mutate(Company = "Star Wars",
+         Date = 1:n()) 
+ggplot(char_height, 
+       aes(x=Date, y=Close, color=Company)) + 
+  geom_line(size=1) +
+  scale_x_continuous(breaks = seq(0, max(char_height$Date), 10),
+                     labels = seq(0, max(char_height$Date), 10)) +
+  scale_y_continuous(limits = c(0, 250), 
+                     breaks = seq(0, 250, 50),
+                     labels = seq(0, 250, 50)) +
+  labs(title = "Heights of Star Wars Characters",
+       y = "Height (cm)") +
+  theme_minimal() +
+  scale_color_brewer(palette = "Set1")
+
+# Chapter 7.2
+
+# Chapter 7.4
+ggplot(starwars, aes(x = mass, y = height)) +
+  geom_area(fill="lightblue", color = "blue") +
+  labs(title = "Star Wars Character Heights vs. Mass",
+       x = "Mass (kg)",
+       y = "Height (cm)")
+
+
+
+```
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
